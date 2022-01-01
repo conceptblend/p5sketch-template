@@ -3,8 +3,8 @@ const PARAMS = [
   {
     name: "set one",
     seed: "hello world",
-    width: 800,
-    height: 800,
+    width: 540,
+    height: 540,
     fps: 30,
     duration: 30 * 10, // no unit (frameCount by default; sometimes seconds or frames or whatever)
     a: 0,
@@ -41,6 +41,9 @@ function draw() {
   background(0);
 
   // DO YOUR DRAWING HERE!
+  noFill();
+  stroke( 255, 128, 32 );
+  rect( 20, 20, 30, 30 );
 
   if (EXPORTVIDEO) {
     if (!isRecording) {
