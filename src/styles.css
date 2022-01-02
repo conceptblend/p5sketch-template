@@ -2,7 +2,13 @@ html,
 body {
   margin: 0;
   padding: 0;
+  background-color: #323232;
+  max-width: 100%;
+}
+body {
+  padding: 1rem;
 }
 canvas {
   display: block;
+  margin: auto;
 }
