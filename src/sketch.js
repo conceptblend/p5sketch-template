@@ -16,7 +16,7 @@ const PARAMS = [
 const P = PARAMS[0];
 
 // VIDEO
-const EXPORTVIDEO = !true; // set to `false` to not export
+const EXPORTVIDEO = P.exportVideo ?? false; // set to `false` to not export
 const FPS = P.fps;
 const DURATION = P.duration;
 let cnvsrecorder;
@@ -29,7 +29,7 @@ function setup() {
   
   noStroke();
   
-  noiseSeed( P.seed );
+  Math.seedrandom( P.seed );
   
   frameRate( FPS );
 
@@ -61,14 +61,28 @@ function draw() {
   }
 }
 
-function getName() {
-  // ugly method for inserting the palette but usually makes the
-  // base64 value too long and extends the full URL length beyond
-  // the 255 char limit for createObjectURL.
-  // let tmp = P;
-  // tmp.palette = palette.map(c => p5ColorToHex( c ) );
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+function getName() {
   // Encode the parameters into the filename
-  let params = window.btoa(JSON.stringify(P));
+  // let params = window.btoa(JSON.stringify(P));
+  let params = MD5( JSON.stringify(P) );
   return `${P.name}-${params}-${new Date().toISOString()}`;
 }
+
+function saveImage( ext ) {
+  save(`${ getName() }.${ ext ?? 'jpg' }`);
+}
+
+function saveConfig() {
+  saveJSON( P, `${getName()}-config.json` );
+}
+
+function downloadOutput() {
+  saveImage();
+  saveConfig();
+}
+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
