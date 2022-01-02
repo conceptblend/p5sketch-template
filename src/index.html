@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="utf-8" />
     <title>Sketch</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <script src="https://unpkg.com/p5.js-svg@1.1.1"></script>
+    <!-- http://davidbau.com/archives/2010/01/30/random_seeds_coded_hints_and_quintillions.html#more -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"
       integrity="sha512-+Ru50BzEpZjlFzVnjSmJfYFPFfY2hS0Kjlu/IvqaJoux7maF5lJrRVUJWJ2LevPls7rd242GLbWEt+zAo4OVVQ=="
@@ -11,10 +13,12 @@
       referrerpolicy="no-referrer"
     ></script>
     <script src="https://cdn.jsdelivr.net/gh/conceptblend/p5js-recorder/dist/recorder.min.js"></script>
+    <script src="lib/md5.js"></script>
     <link rel="stylesheet" type="text/css" href="styles.css" />
-    <meta charset="utf-8" />
+    
   </head>
   <body>
     <script src="sketch.js"></script>
+    <button onclick="downloadOutput();">Download</button>
   </body>
 </html>
