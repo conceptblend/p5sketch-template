@@ -7,6 +7,7 @@ const PARAMS = [
     height: 540,
     fps: 30,
     duration: 30 * 10, // no unit (frameCount by default; sometimes seconds or frames or whatever)
+    exportVideo: false,
     a: 0,
     b: 0,
   },
@@ -33,7 +34,7 @@ function setup() {
   
   frameRate( FPS );
 
-  // noLoop();
+  if ( EXPORTVIDEO ) noLoop();
 }
 
 
