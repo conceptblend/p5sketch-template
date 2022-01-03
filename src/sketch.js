@@ -34,7 +34,7 @@ function setup() {
   
   frameRate( FPS );
 
-  if ( EXPORTVIDEO ) noLoop();
+  if ( !EXPORTVIDEO ) noLoop();
 }
 
 
