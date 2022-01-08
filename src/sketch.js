@@ -8,13 +8,14 @@ const PARAMS = [
     fps: 30,
     duration: 30 * 10, // no unit (frameCount by default; sometimes seconds or frames or whatever)
     exportVideo: false,
+    isAnimated: false,
     a: 0,
     b: 0,
   },
 ];
 
 // PARAMETERS IN USE
-const P = PARAMS[0];
+const P = PARAMS[ PARAMS.length - 1 ];
 
 // VIDEO
 const EXPORTVIDEO = P.exportVideo ?? false; // set to `false` to not export
@@ -34,7 +35,7 @@ function setup() {
   
   frameRate( FPS );
 
-  if ( !EXPORTVIDEO ) noLoop();
+  if ( !EXPORTVIDEO && !P.isAnimated ) noLoop();
 }
 
 
@@ -44,7 +45,7 @@ function draw() {
   // DO YOUR DRAWING HERE!
   noFill();
   stroke( 255, 128, 32 );
-  rect( 20, 20, 30, 30 );
+  rect( 20 + frameCount%60, 20, 30, 30 );
 
   if (EXPORTVIDEO) {
     if (!isRecording) {
@@ -57,6 +58,7 @@ function draw() {
     if (frameCount > DURATION) {
       cnvsrecorder.stop(`${getName()}`);
       noLoop();
+      saveConfig();
       console.log('Done.');
     }
   }
