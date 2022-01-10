@@ -9,8 +9,7 @@ const PARAMS = [
     duration: 30 * 10, // no unit (frameCount by default; sometimes seconds or frames or whatever)
     exportVideo: false,
     isAnimated: false,
-    a: 0,
-    b: 0,
+    renderAsVector: !true,
   },
 ];
 
@@ -25,7 +24,9 @@ let cnvsrecorder;
 let isRecording = false;
 
 function setup() {
-  createCanvas( P.width, P.height );
+  // SVG output is MUCH SLOWER but necessary for the SVG exports
+  createCanvas( P.width, P.height, P.renderAsVector ? SVG : P2D );
+
   angleMode( DEGREES );
   colorMode( RGB, 255 );
   
@@ -47,7 +48,8 @@ function draw() {
   stroke( 255, 128, 32 );
   rect( 20 + frameCount%60, 20, 30, 30 );
 
-  if (EXPORTVIDEO) {
+  if ( EXPORTVIDEO ) {
+    if ( P.renderAsVector ) throw new Error("Cannot export video when rendering as Vector");
     if (!isRecording) {
       cnvsrecorder = new CanvasRecorder(FPS);
       cnvsrecorder.start();
@@ -74,8 +76,8 @@ function getName() {
   return `${P.name}-${params}-${new Date().toISOString()}`;
 }
 
-function saveImage( ext ) {
-  save(`${ getName() }.${ ext ?? 'jpg' }`);
+function saveImage( ext = 'jpg' ) {
+  save(`${ getName() }.${ ext }`);
 }
 
 function saveConfig() {
@@ -83,7 +85,7 @@ function saveConfig() {
 }
 
 function downloadOutput() {
-  saveImage();
+  saveImage( P.renderAsVector ? 'svg' : 'jpg' );
   saveConfig();
 }
 

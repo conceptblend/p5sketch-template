@@ -8,7 +8,9 @@ body {
 body {
   padding: 1rem;
 }
+
+.p5Canvas, /* Adds support for the <div /> around SVG output */
 canvas {
-  display: block;
-  margin: auto;
+  display: block !important;
+  margin: 1rem 0;
 }
