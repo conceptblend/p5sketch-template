@@ -5,7 +5,8 @@
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "live-server ./src/ --watch ./src/"
+    "start": "live-server ./src/ --watch ./src/",
+    "prepare": "npx crlf --set=LF node_modules/.bin/*"
   },
   "repository": {
     "type": "git",
