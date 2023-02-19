@@ -8,7 +8,7 @@ const PARAM_SETS = [
     fps: 30,
     duration: 30 * 10, // no unit (frameCount by default; sometimes seconds or frames or whatever)
     exportVideo: false,
-    isAnimated: false,
+    isAnimated: true,
     renderAsVector: true,
   },
 ];

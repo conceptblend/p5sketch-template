@@ -5,12 +5,17 @@
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "mkdir -p ./dist && yarn clean && yarn copy && yarn build:dist",
-    "start": "mkdir -p ./dist && yarn clean && yarn copy && yarn start:dev",
+    "build": "yarn build:prep && yarn build:dist",
+    "dev": "yarn build:prep && yarn build:dev",
+    "build:svg": "yarn build:prep && yarn build:dist:svg",
+    "dev:svg": "yarn build:prep && yarn build:dev:svg",
     "copy": "cp ./public/* ./dist",
     "clean": "rm -rf ./dist/*",
-    "build:dist": "esbuild ./src/index.js --bundle --minify --sourcemap --outdir=./dist --target=es2020",
-    "start:dev": "esbuild ./src/index.js --bundle --sourcemap --outdir=./dist --watch --servedir=./dist --target=es2020",
+    "build:prep": "mkdir -p ./dist && yarn clean && yarn copy",
+    "build:dist": "esbuild ./src/index.js --bundle --minify --keep-names --sourcemap --outdir=./dist --target=es2020 --define:AS_SVG=false --define:RELOAD=false",
+    "build:dev": "esbuild ./src/index.js --bundle --sourcemap --outdir=./dist --watch --servedir=./dist --target=es2020 --define:AS_SVG=false --define:RELOAD=true",
+    "build:dist:svg": "esbuild ./src/index.js --bundle --minify --sourcemap --outdir=./dist --target=es2020 --define:AS_SVG=true --define:RELOAD=false",
+    "build:dev:svg": "esbuild ./src/index.js --bundle --sourcemap --outdir=./dist --watch --servedir=./dist --target=es2020  --define:RELOAD=true --define:AS_SVG=true",
     "prepare": "npx crlf --set=LF node_modules/.bin/*"
   },
   "repository": {
