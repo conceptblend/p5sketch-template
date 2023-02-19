@@ -1,5 +1,5 @@
 // PARAMETER SETS
-const PARAMS = [
+const PARAM_SETS = [
   {
     name: "set one",
     seed: "hello world",
@@ -9,71 +9,75 @@ const PARAMS = [
     duration: 30 * 10, // no unit (frameCount by default; sometimes seconds or frames or whatever)
     exportVideo: false,
     isAnimated: false,
-    renderAsVector: !true,
+    renderAsVector: true,
   },
 ];
 
 // PARAMETERS IN USE
-const P = PARAMS[ PARAMS.length - 1 ];
+const PARAMS = PARAM_SETS[ PARAM_SETS.length - 1 ];
 
 // VIDEO
-const EXPORTVIDEO = P.exportVideo ?? false; // set to `false` to not export
-const FPS = P.fps;
-const DURATION = P.duration;
-let cnvsrecorder;
-let isRecording = false;
+const EXPORTVIDEO = PARAMS.exportVideo ?? false; // set to `false` to not export
+const FPS = PARAMS.fps;
+const DURATION = PARAMS.duration;
 
-function setup() {
-  // SVG output is MUCH SLOWER but necessary for the SVG exports
-  createCanvas( P.width, P.height, P.renderAsVector ? SVG : P2D );
+export const sketch = ( p ) => {
+  let cnvsrecorder;
+  let isRecording = false;
 
-  angleMode( DEGREES );
-  colorMode( RGB, 255 );
   
-  noStroke();
+  p.setup = () => {
+    // Enable the SVG renderer
+    // if ( PARAMS.renderAsVector ) init( p )
+
+    // SVG output is MUCH SLOWER but necessary for the SVG exports
+    p.createCanvas( PARAMS.width, PARAMS.height, PARAMS.renderAsVector ? p.SVG : p.P2D );
   
-  Math.seedrandom( P.seed );
+    p.angleMode( p.DEGREES );
+    p.colorMode( p.RGB, 255 );
+    
+    p.noStroke();
+    
+    // Math.seedrandom( PARAMS.seed );
+    
+    p.frameRate( FPS );
   
-  frameRate( FPS );
+    if ( !EXPORTVIDEO && !PARAMS.isAnimated ) p.noLoop();
+  }
 
-  if ( !EXPORTVIDEO && !P.isAnimated ) noLoop();
-}
-
-
-function draw() {
-  background(0);
-
-  // DO YOUR DRAWING HERE!
-  noFill();
-  stroke( 255, 128, 32 );
-  rect( 20 + frameCount%60, 20, 30, 30 );
-
-  if ( EXPORTVIDEO ) {
-    if ( P.renderAsVector ) throw new Error("Cannot export video when rendering as Vector");
-    if (!isRecording) {
-      cnvsrecorder = new CanvasRecorder(FPS);
-      cnvsrecorder.start();
-      isRecording = true;
-      console.log('Recording...');
-    }
-    // Example to end automatically after 361 frames to get a full loop
-    if (frameCount > DURATION) {
-      cnvsrecorder.stop(`${getName()}`);
-      noLoop();
-      saveConfig();
-      console.log('Done.');
+  p.draw = () => {
+    p.background(0);
+  
+    // DO YOUR DRAWING HERE!
+    p.noFill();
+    p.stroke( 255, 0, 255 );
+    p.rect( 20 + p.frameCount%60, 20, 30, 30 );
+  
+    if ( EXPORTVIDEO ) {
+      if ( PARAMS.renderAsVector ) throw new Error("Cannot export video when rendering as Vector");
+      if (!isRecording) {
+        cnvsrecorder = new CanvasRecorder(FPS);
+        cnvsrecorder.start();
+        isRecording = true;
+        console.log('Recording...');
+      }
+      // Example to end automatically after 361 frames to get a full loop
+      if (p.frameCount > DURATION) {
+        cnvsrecorder.stop(`${getName()}`);
+        p.noLoop();
+        p.saveConfig();
+        console.log('Done.');
+      }
     }
   }
-}
+};
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function getName() {
   // Encode the parameters into the filename
-  // let params = window.btoa(JSON.stringify(P));
-  let params = MD5( JSON.stringify(P) );
-  return `${P.name}-${params}-${new Date().toISOString()}`;
+  return `${PARAMS.name}-${encodeURIComponent(PARAMS.seed)}-${new Date().toISOString()}`;
 }
 
 function saveImage( ext = 'jpg' ) {
@@ -81,11 +85,11 @@ function saveImage( ext = 'jpg' ) {
 }
 
 function saveConfig() {
-  saveJSON( P, `${getName()}-config.json` );
+  saveJSON( PARAMS, `${getName()}-config.json` );
 }
 
 function downloadOutput() {
-  saveImage( P.renderAsVector ? 'svg' : 'jpg' );
+  saveImage( PARAMS.renderAsVector ? 'svg' : 'jpg' );
   saveConfig();
 }
 
