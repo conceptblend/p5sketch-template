@@ -22,14 +22,10 @@ const FPS = PARAMS.fps;
 const DURATION = PARAMS.duration;
 
 export const sketch = ( p ) => {
-  let cnvsrecorder;
   let isRecording = false;
 
   
   p.setup = () => {
-    // Enable the SVG renderer
-    // if ( PARAMS.renderAsVector ) init( p )
-
     // SVG output is MUCH SLOWER but necessary for the SVG exports
     p.createCanvas( PARAMS.width, PARAMS.height, PARAMS.renderAsVector ? p.SVG : p.P2D );
   
@@ -38,7 +34,12 @@ export const sketch = ( p ) => {
     
     p.noStroke();
     
-    // Math.seedrandom( PARAMS.seed );
+    // Dependency: Statically added via HTML
+    Math.seedrandom( PARAMS.seed );
+
+    console.log( Math.random() );
+    console.log( Math.random() );
+    console.log( Math.random() );
     
     p.frameRate( FPS );
   
@@ -56,14 +57,11 @@ export const sketch = ( p ) => {
     if ( EXPORTVIDEO ) {
       if ( PARAMS.renderAsVector ) throw new Error("Cannot export video when rendering as Vector");
       if (!isRecording) {
-        cnvsrecorder = new CanvasRecorder(FPS);
-        cnvsrecorder.start();
         isRecording = true;
-        console.log('Recording...');
+        console.log('Recording...[ Not implemented ]');
       }
       // Example to end automatically after 361 frames to get a full loop
       if (p.frameCount > DURATION) {
-        cnvsrecorder.stop(`${getName()}`);
         p.noLoop();
         p.saveConfig();
         console.log('Done.');
