@@ -1,34 +1,38 @@
 # p5sketch-template
 
+## Overview
+
 p5.js sketch template that includes:
 
-- **p5.js** library for core features to edit the HTML canvas
-- **seedrandom** for deterministic randomization
-- **CanvasRecorder** for recording the canvas to webm format
-- **p5.js-svg** for drawing and exporting to SVG
+- **[p5.js](https://p5js.org/)** library for core features to edit the HTML canvas
+- **[seedrandom](http://davidbau.com/archives/2010/01/30/random_seeds_coded_hints_and_quintillions.html)** for deterministic randomization
+- **[p5.js-svg](https://github.com/zenozeng/p5.js-svg)** for drawing and exporting to SVG
 
 -----
 
-### FIX OPEN BUG IN A DEPENDENCY:
+## Build scripts
 
 
-[https://github.com/tapio/live-server/pull/386](https://github.com/tapio/live-server/pull/386)
+### Development
+
+Development build with watch and live-reload:
 
 ```zsh
-cd node_modules/live-server/
+# draw to Canvas
+yarn dev
 
-yarn remove colors && yarn add colors@1.4.0
+# draw to SVG
+yarn dev:svg
+```
 
-# EDIT PACKAGE.JSON DEPENDENCIES
-#
-# "dependencies": {
-#   "chokidar": "^2.0.4",
-#   "colors": "latest", <= change from "latest" to "1.4.0" (stable)
-#   "connect": "^3.6.6",
+### Distribution
 
-cd ../../
+For distribution to production:
 
-yarn install && yarn start
+```zsh
+# draw to Canvas
+yarn build
 
-# END FIX
+# draw to SVG
+yarn build:svg
 ```
