@@ -36,10 +36,6 @@ export const sketch = ( p ) => {
     
     // Dependency: Statically added via HTML
     Math.seedrandom( PARAMS.seed );
-
-    console.log( Math.random() );
-    console.log( Math.random() );
-    console.log( Math.random() );
     
     p.frameRate( FPS );
   
