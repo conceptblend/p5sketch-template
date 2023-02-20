@@ -1,5 +1,8 @@
 const TWOPI = Math.PI * 2;
 
+// Assume fxrand by default but fallback to Math.random() as our PRNG
+var fxrand = fxrand ?? Math.random;
+
 /**
  * 
  * @param {Any} val 

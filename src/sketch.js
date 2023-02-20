@@ -25,7 +25,6 @@ const DURATION = PARAMS.duration;
 
 export const sketch = ( p ) => {
   let isRecording = false;
-
   
   p.setup = () => {
     // SVG output is MUCH SLOWER but necessary for the SVG exports
