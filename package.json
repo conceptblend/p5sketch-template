@@ -35,9 +35,11 @@
   },
   "homepage": "https://github.com/conceptblend/p5sketch-template#readme",
   "dependencies": {
-    "@types/p5": "^1.3.2",
-    "esbuild": "0.17.8",
-    "p5": "^1.5.0",
-    "p5.js-svg": "^1.3.3"
+    "p5": "1.6.0",
+    "p5.js-svg": "1.4.0"
+  },
+  "devDependencies": {
+    "@types/p5": "1.6.0",
+    "esbuild": "0.19.5"
   }
 }
