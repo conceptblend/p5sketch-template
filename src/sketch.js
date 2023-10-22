@@ -65,35 +65,32 @@ export const sketch = (p) => {
       // Example to end automatically after 361 frames to get a full loop
       if (p.frameCount > DURATION) {
         p.noLoop();
-        p.saveConfig();
+        saveConfig();
         console.log("Done.");
       }
     }
   };
+
+  function getName() {
+    // Encode the parameters into the filename
+    return `${PARAMS.name}-${encodeURIComponent(
+      PARAMS.seed
+    )}-${new Date().toISOString()}`;
+  }
+
+  function saveImage(ext = "jpg") {
+    p.save(`${getName()}.${ext}`);
+  }
+
+  function saveConfig() {
+    p.saveJSON(PARAMS, `${getName()}-config.json`);
+  }
+
+  function downloadOutput() {
+    saveImage(PARAMS.renderAsVector ? "svg" : "jpg");
+    saveConfig();
+  }
 };
-
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-function getName() {
-  // Encode the parameters into the filename
-  return `${PARAMS.name}-${encodeURIComponent(
-    PARAMS.seed
-  )}-${new Date().toISOString()}`;
-}
-
-function saveImage(ext = "jpg") {
-  save(`${getName()}.${ext}`);
-}
-
-function saveConfig() {
-  saveJSON(PARAMS, `${getName()}-config.json`);
-}
-
-function downloadOutput() {
-  saveImage(PARAMS.renderAsVector ? "svg" : "jpg");
-  saveConfig();
-}
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
