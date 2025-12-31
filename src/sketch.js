@@ -8,8 +8,8 @@ const PARAM_SETS = [
     width: 540,
     height: 540,
     fps: 30,
-    duration: 30 * 10, // no unit (frameCount by default; sometimes seconds or frames or whatever)
-    exportVideo: false,
+    duration: 30 * 5, // no unit (frameCount by default; sometimes seconds or frames or whatever)
+    exportVideo: true,
     isAnimated: true,
     renderAsVector: AS_SVG,
   },
@@ -23,16 +23,21 @@ const EXPORTVIDEO = AS_SVG ? false : PARAMS.exportVideo ?? false; // set to `fal
 const FPS = PARAMS.fps;
 const DURATION = PARAMS.duration;
 
+P5Capture.setDefaultOptions({
+  format: "mp4",
+  framerate: FPS,
+  duration: DURATION,
+  verbose: true,
+  disableUi: true,
+});
+
 export const sketch = (p) => {
   let isRecording = false;
+  let capture;
 
   p.setup = () => {
     // SVG output is MUCH SLOWER but necessary for the SVG exports
-    p.createCanvas(
-      PARAMS.width,
-      PARAMS.height,
-      PARAMS.renderAsVector ? p.SVG : p.P2D
-    );
+    p.createCanvas(PARAMS.width, PARAMS.height, PARAMS.renderAsVector ? p.SVG : p.P2D);
 
     p.angleMode(p.DEGREES);
     p.colorMode(p.RGB, 255);
@@ -43,6 +48,11 @@ export const sketch = (p) => {
     Math.seedrandom(PARAMS.seed);
 
     p.frameRate(FPS);
+
+    // Initialize capture instance if exporting video
+    if (EXPORTVIDEO) {
+      capture = P5Capture.getInstance();
+    }
 
     if (!EXPORTVIDEO && !PARAMS.isAnimated) p.noLoop();
   };
@@ -56,26 +66,29 @@ export const sketch = (p) => {
     p.rect(20 + (p.frameCount % 60), 20, 30, 30);
 
     if (EXPORTVIDEO) {
-      if (PARAMS.renderAsVector)
-        throw new Error("Cannot export video when rendering as Vector");
+      if (PARAMS.renderAsVector) throw new Error("Cannot export video when rendering as Vector");
+
       if (!isRecording) {
         isRecording = true;
-        console.log("Recording...[ Not implemented ]");
+        capture.start({
+          baseFilename: () => getName(),
+        });
+        console.log(`Recording ${DURATION} frames at ${FPS} fps...`);
       }
-      // Example to end automatically after 361 frames to get a full loop
-      if (p.frameCount > DURATION) {
+
+      // Check if recording is complete
+      if (p.frameCount >= DURATION) {
+        capture.stop(); // This will trigger encoding and download
         p.noLoop();
         saveConfig();
-        console.log("Done.");
+        console.log("Recording complete. Encoding and downloading...");
       }
     }
   };
 
   function getName() {
     // Encode the parameters into the filename
-    return `${PARAMS.name}-${encodeURIComponent(
-      PARAMS.seed
-    )}-${new Date().toISOString()}`;
+    return `${PARAMS.name}-${encodeURIComponent(PARAMS.seed)}-${new Date().toISOString()}`;
   }
 
   function saveImage(ext = "jpg") {
