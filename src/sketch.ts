@@ -1,3 +1,4 @@
+import * as p5 from "p5";
 import * as utils from "./lib/fx-utils";
 
 // PARAMETER SETS
@@ -31,7 +32,7 @@ P5Capture.setDefaultOptions({
   disableUi: true,
 });
 
-export const sketch = (p) => {
+export const sketch = (p: p5) => {
   let isRecording = false;
   let capture;
 
