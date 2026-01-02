@@ -87,6 +87,12 @@ export const sketch = (p: p5) => {
     }
   };
 
+  p.keyReleased = (e: KeyboardEvent) => {
+    if (e.key === "s" || e.key === "S") {
+      downloadOutput("png");
+    }
+  };
+
   function getName() {
     // Encode the parameters into the filename
     return `${PARAMS.name}-${encodeURIComponent(PARAMS.seed)}-${new Date().toISOString()}`;
@@ -100,8 +106,8 @@ export const sketch = (p: p5) => {
     p.saveJSON(PARAMS, `${getName()}-config.json`);
   }
 
-  function downloadOutput() {
-    saveImage(PARAMS.renderAsVector ? "svg" : "jpg");
+  function downloadOutput(ext = "jpg") {
+    saveImage(PARAMS.renderAsVector ? "svg" : ext);
     saveConfig();
   }
 };
